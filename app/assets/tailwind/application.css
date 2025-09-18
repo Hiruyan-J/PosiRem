@@ -37,3 +37,4 @@
   --noise: 0;
 }
 
+@source inline("alert-{success:, info:, warning:, error:}");

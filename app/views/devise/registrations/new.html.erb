@@ -5,8 +5,13 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "input" %>
+  </div>
+
+  <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+    <%= f.email_field :email, autocomplete: "email", class: "input" %>
   </div>
 
   <div class="field">
@@ -23,7 +28,7 @@
   </div>
 
   <div class="actions flex justify-center">
-    <%= f.submit "Sign up", class: "btn btn-primary"  %>
+    <%= f.submit t('.sign_up'), class: "btn btn-primary"  %>
   </div>
 <% end %>
 
