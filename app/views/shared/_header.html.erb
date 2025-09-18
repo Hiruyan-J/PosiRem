@@ -16,16 +16,14 @@
   <!-- ロゴ表示 -->
   <div class="navbar-center">
     <%= link_to root_path, class: "btn btn-ghost btn-secondary p-0" do %>
-      <%# inline_svg_tag "ginlog_logo.svg", class: "h-14 w-auto" %>
       <p class="text-2xl md:text-3xl">PosiRem!</p>
     <% end %>
   </div>
   <!-- ログイン・ログアウト -->
   <div class="navbar-end">
-    <%# unless user_signed_in? %>
-    <% if true %>
+    <% unless user_signed_in? %>
       <!-- ログインボタン表示 -->
-      <%= link_to "#", class: "btn btn-ghost btn-secondary btn-md md:btn-lg flex items-center gap-1" do %>
+      <%= link_to new_user_session_path, class: "btn btn-ghost btn-secondary btn-md md:btn-lg flex items-center gap-1" do %>
         <span><%= t('header.login') %></span>
         <span class="material-symbols-rounded ms-size-24 md:ms-size-32">login</span>
       <% end %>
