@@ -5,12 +5,12 @@
   <%= render "devise/shared/error_messages", resource: resource %>
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-primary w-full md:w-8/12" %>
   </div>
 
   <div class="field">
     <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
+    <%= f.password_field :password, autocomplete: "current-password", class: "input input-primary w-full md:w-8/12" %>
   </div>
 
   <% if devise_mapping.rememberable? %>
