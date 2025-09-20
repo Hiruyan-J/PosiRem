@@ -1,4 +1,50 @@
-<div>
-  <h1 class="font-bold text-4xl">Conversations#index</h1>
-  <p>Find me in app/views/conversations/index.html.erb</p>
+<%= content_for :page_title, "AIによるポジティブな言い換え" %>
+
+<div class="container mx-auto p-4">
+  <div class="chat-container bg-base-100 p-6 rounded-box shadow-lg max-w-2xl mx-auto">
+    <% if @conversations.any? %>
+      <div id="chat-messages" class="overflow-y-auto h-96 mb-4 p-4 space-y-4">
+        <% @conversations.each do |conversation| %>
+          <!-- ユーザーの入力 -->
+          <div class="chat chat-end">
+            <div class="chat-bubble chat-bubble-primary text-primary-content">
+              <%= conversation.original_text %>
+            </div>
+          </div>
+          <!-- AIの回答 -->
+          <div class="chat chat-start">
+            <div class="chat-bubble chat-bubble-secondary text-secondary-content">
+              <% if conversation.suggestions.any? %>
+                <% conversation.suggestions.each do |suggestion| %>
+                  <p class="mb-2">
+                    <%= suggestion.positive_text %>
+                    <%# button_to "Xでシェア", "#", class: "btn btn-xs btn-outline btn-neutral" %>
+                  </p>
+                <% end %>
+              <% else %>
+                <p>AIが考え中です...</p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- 入力フォーム -->
+    <div class="mt-4">
+      <%= form_with(model: @conversation, url: conversations_path, class: "flex gap-2") do |form| %>
+        <%= form.text_field :original_text, placeholder: "例：走らないで", class: "input input-bordered flex-grow" %>
+        <%= form.submit "送信", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  const chatMessages = document.getElementById('chat-messages');
+  if (chatMessages) {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+});
+</script>
