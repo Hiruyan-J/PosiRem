@@ -62,9 +62,9 @@ class ConversationsController < ApplicationController
         )
 
         # 5. AIからのJSON応答をパースし、インスタンス変数に格納する
-        raw_positive_texts = response.dig("choices", 0, "message", "content")
-        positive_texts = JSON.parse(raw_positive_texts)
-        positive_texts.each do |text|
+        raw_suggestions = response.dig("choices", 0, "message", "content")
+        suggestions = JSON.parse(raw_suggestions)
+        suggestions['positive_texts'].each do |text|
           @conversation.suggestions.create!(positive_text: text)
         end
       rescue OpenAI::Error => e
@@ -77,10 +77,10 @@ class ConversationsController < ApplicationController
 
       # createアクションの後、indexテンプレートを再描画する
       # これにより、@suggestions変数がindex.html.erbで使用可能に
-      @conversations = current_user.conversations.order(created_at: :asc)
-      render :index, status: :ok
+      # @conversations = current_user.conversations.order(created_at: :asc)
+      # render :index, status: :ok
       # AIManager.generate_suggestions(@conversation)
-      # redirect_to conversations_path, notice: "AIに言い換えを依頼しました！"
+      redirect_to conversations_path, notice: "AIに言い換えを依頼しました！"
     else
       render :index, status: :unprocessable_entity
     end
