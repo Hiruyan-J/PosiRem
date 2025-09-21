@@ -49,7 +49,7 @@ class ConversationsController < ApplicationController
             # messages: AIに渡す指示や会話の履歴を配列で指定します。
             # role: "user"は、ユーザーからの発言であることを示します。
             # content: ここに具体的な指示（プロンプト）を渡します。
-            messages: [{ role: "user", content: prompt }],
+            messages: [ { role: "user", content: prompt } ],
 
             # response_format: AIの応答形式を指定します。
             # { type: "json_object" }とすることで、AIは必ず有効なJSONオブジェクトを返すようになります。
@@ -57,14 +57,14 @@ class ConversationsController < ApplicationController
 
             # temperature: 応答のランダム性（創造性）を制御します。0に近いほど決定的で、2に近いほど多様な応答になります。
             # 0.7は、ある程度の創造性を保ちつつ、安定した応答を得やすい一般的な値です。
-            temperature: 0.7,
+            temperature: 0.7
           }
         )
 
         # 5. AIからのJSON応答をパースし、インスタンス変数に格納する
         raw_suggestions = response.dig("choices", 0, "message", "content")
         suggestions = JSON.parse(raw_suggestions)
-        suggestions['positive_texts'].each do |text|
+        suggestions["positive_texts"].each do |text|
           @conversation.suggestions.create!(positive_text: text)
         end
       rescue OpenAI::Error => e
