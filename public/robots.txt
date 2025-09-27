@@ -1,1 +1,9 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+User-agent: *
+Disallow: /users/
+Disallow: /conversations
+Disallow: /up
+Disallow: /service-worker
+Disallow: /manifest
+
+Sitemap: https://posirem.onrender.com/sitemap.xml.gz
