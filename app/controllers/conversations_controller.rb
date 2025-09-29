@@ -11,7 +11,7 @@ class ConversationsController < ApplicationController
       # AIへのリクエスト処理（非同期ジョブを推奨）
       # 1. フォームから食材の文字列を受け取る
       original_text = conversation_params[:original_text]
-      
+
       # 2. AIへの指示（プロンプト）を作成する。今回はJSON形式での出力を厳密に指示する。
       prompt = <<-PROMPT
         あなたは、乳幼児心理学を学んだ保育園の先生です。
