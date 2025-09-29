@@ -61,6 +61,13 @@ group :development, :test do
 
   # Table/Schema
   gem "annotate"
+
+  # Debugger
+  gem "byebug"
+  gem "pry"
+  gem "pry-byebug"
+  gem "pry-doc"
+  gem "pry-rails"
 end
 
 group :development do
