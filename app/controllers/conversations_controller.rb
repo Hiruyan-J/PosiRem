@@ -9,7 +9,7 @@ class ConversationsController < ApplicationController
     @conversation = current_user.conversations.build(conversation_params)
     if @conversation.save
       # AIへのリクエスト処理（非同期ジョブを推奨）
-      # 1. フォームから食材の文字列を受け取る
+      # 1. フォームから文字列を受け取る
       original_text = conversation_params[:original_text]
 
       # 2. AIへの指示（プロンプト）を作成する。今回はJSON形式での出力を厳密に指示する。
@@ -59,21 +59,19 @@ class ConversationsController < ApplicationController
         # 4. APIにリクエストを送信する。JSONモードを有効にする。
         response = client.chat(
           parameters: {
-            # model: 使用するAIモデルを指定します。
-            # "gpt-4o-mini"は、高速かつ低コストでありながら高い性能を持つ最新モデルの一つです。
+            # model: 使用するAIモデルを指定
             model: "gpt-4o-mini",
 
-            # messages: AIに渡す指示や会話の履歴を配列で指定します。
-            # role: "user"は、ユーザーからの発言であることを示します。
-            # content: ここに具体的な指示（プロンプト）を渡します。
+            # messages: AIに渡す指示や会話の履歴を配列で指定
+            # role: "user"ユーザーからの発言である意味
+            # content: プロンプト渡す
             messages: [ { role: "user", content: prompt } ],
 
-            # response_format: AIの応答形式を指定します。
-            # { type: "json_object" }とすることで、AIは必ず有効なJSONオブジェクトを返すようになります。
+            # response_format: AIの応答形式を指定
+            # { type: "json_object" }…AIは必ず有効なJSONオブジェクトを返す
             response_format: { type: "json_object" },
 
-            # temperature: 応答のランダム性（創造性）を制御します。0に近いほど決定的で、2に近いほど多様な応答になります。
-            # 0.7は、ある程度の創造性を保ちつつ、安定した応答を得やすい一般的な値です。
+            # temperature: 応答のランダム性（創造性）の制御。0に近いほど決定的。2に近いほど多様な応答。
             temperature: 0.7
           }
         )
@@ -90,14 +88,17 @@ class ConversationsController < ApplicationController
       rescue JSON::ParserError => e
         # JSONのパースに失敗した場合の処理
         @error_message = "AIからの応答を正しく解析できませんでした。もう一度お試しください。"
+      else
+        # createアクションの後、indexテンプレートを再描画する
+        @conversations = current_user.conversations.order(created_at: :asc)
+        @conversation = current_user.conversations.build
+        render :index, status: :ok
       end
 
       # createアクションの後、indexテンプレートを再描画する
-      # これにより、@suggestions変数がindex.html.erbで使用可能に
       # @conversations = current_user.conversations.order(created_at: :asc)
       # render :index, status: :ok
-      # AIManager.generate_suggestions(@conversation)
-      redirect_to conversations_path, notice: "AIに言い換えを依頼しました！"
+      # redirect_to conversations_path, notice: "AIに言い換えを依頼しました！"
     else
       render :index, status: :unprocessable_entity
     end
