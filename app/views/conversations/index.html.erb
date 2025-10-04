@@ -8,13 +8,13 @@
           <!-- ユーザーの入力 -->
           <%= render "user_message", conversation: conversation %>
           <!-- AIの回答 -->
-          <% if conversation.suggestion.any? %>
+          <% if conversation.suggestions.any? %>
             <%= render "ai_response", conversation: conversation %>
           <% end %>
         <% end %>
       </div>
     <% else %>
-      <div class="chat chat-st">
+      <div class="chat chat-start">
         <div class="chat-bubble chat-bubble-secondary text-secondary-content">
           <p>お子さまへの注意の言葉を、テキストボックスに入力してください。</p>
           <p>入力いただいた言葉を、ポジティブでやさしい表現に変換して、いくつか候補をご提案します。</p>

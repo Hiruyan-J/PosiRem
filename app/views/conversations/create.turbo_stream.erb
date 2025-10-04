@@ -1,4 +1,4 @@
-<% if @conversation.persisted? %>
+<% if @conversation.any? %>
   <%# ユーザーメッセージを追加 %>
   <%= turbo_stream.append "chat-messages" do %>
     <%= render "user_message", conversation: @conversation %>
