@@ -6,45 +6,33 @@
       <div id="chat-messages" class="overflow-y-auto max-h-[60vh] mb-4 p-4 space-y-4">
         <% @conversations.each do |conversation| %>
           <!-- ユーザーの入力 -->
-          <div class="chat chat-end">
-            <div class="chat-bubble chat-bubble-primary text-primary-content">
-              <%= conversation.original_text %>
-            </div>
-          </div>
+          <%= render "user_message", conversation: conversation %>
           <!-- AIの回答 -->
-          <div class="chat chat-start">
-            <div class="chat-bubble chat-bubble-secondary text-secondary-content">
-              <% if conversation.suggestions.any? %>
-                <% conversation.suggestions.each do |suggestion| %>
-                  <p class="mb-2">
-                    <%= suggestion.positive_text %>
-                    <%# button_to "Xでシェア", "#", class: "btn btn-xs btn-outline btn-neutral" %>
-                  </p>
-                <% end %>
-              <% else %>
-                <p>AIが考え中です...</p>
-              <% end %>
-            </div>
-          </div>
+          <% if conversation.suggestion.any? %>
+            <%= render "ai_response", conversation: conversation %>
+          <% end %>
         <% end %>
+      </div>
+    <% else %>
+      <div class="chat chat-st">
+        <div class="chat-bubble chat-bubble-secondary text-secondary-content">
+          <p>お子さまへの注意の言葉を、テキストボックスに入力してください。</p>
+          <p>入力いただいた言葉を、ポジティブでやさしい表現に変換して、いくつか候補をご提案します。</p>
+          <div>
+            <p>たとえば：</p>
+            <ul class="list-disc list-inside ml-4">
+              <li>走らないで → ゆっくり歩こうね</li>
+              <li>テレビを触らないで → 見るだけにしようね</li>
+            </ul>
+          </div>
+          <p>または、今の状況を教えていただくと、その場に合ったやさしい言葉に言い換えることもできます。</p>
+        </div>
       </div>
     <% end %>
 
     <!-- 入力フォーム -->
-    <div class="mt-4">
-      <%= form_with(model: @conversation, url: conversations_path, class: "flex gap-2") do |form| %>
-        <%= form.text_field :original_text, placeholder: "例：走らないで", class: "input input-bordered flex-grow" %>
-        <%= form.submit "送信", class: "btn btn-primary" %>
-      <% end %>
+    <div id="conversation-form" class="mt-4">
+      <%= render 'conversations/form', conversation: @conversation %>
     </div>
   </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', (event) => {
-  const chatMessages = document.getElementById('chat-messages');
-  if (chatMessages) {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-});
-</script>
