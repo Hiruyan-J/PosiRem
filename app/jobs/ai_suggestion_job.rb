@@ -8,10 +8,10 @@ class AiSuggestionJob < ApplicationJob
       # APIにリクエストを送信。JSONモードを有効化。
       raw_suggestions = call_ai_api(conversation.original_text)
 
+      # AIの返答をパース・DBに格納
       suggestions = JSON.parse(raw_suggestions)
-
       suggestions["positive_texts"].each do |text|
-        @conversation.suggestions.create!(positive_text: text)
+        conversation.suggestions.create!(positive_text: text)
       end
 
       # Turbo Streamで結果を配信
@@ -107,9 +107,9 @@ class AiSuggestionJob < ApplicationJob
     broadcast_remove_thinking_message(conversation)
 
     # AIの回答を追加
-    broadcast_append_to(
+    Turbo::StreamsChannel.broadcast_append_to(
       "user_#{conversation.user_id}",
-      target: "messages",
+      target: "chat-messages",
       partial: "conversations/ai_response",
       locals: { conversation: conversation }
     )
@@ -124,7 +124,7 @@ class AiSuggestionJob < ApplicationJob
 
   def broadcast_remove_thinking_message(conversation)
     # 思考中メッセージを削除
-    broadcast_remove_to(
+    Turbo::StreamsChannel.broadcast_remove_to(
       "user_#{conversation.user_id}",
       target: "ai-thinking-#{conversation.id}"
     )

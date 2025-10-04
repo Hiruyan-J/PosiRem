@@ -11,7 +11,7 @@
 
   <%# フォームをクリア %>
   <%= turbo_stream.replace "conversation-form" do %>
-    <%= render "form", conversation: Conversation.new %>
+    <%= render "form", conversation: current_user.conversations.build %>
   <% end %>
 
   <%# フラッシュメッセージ表示 %>

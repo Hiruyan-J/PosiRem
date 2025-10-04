@@ -17,7 +17,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Conversation < ApplicationRecord
-  validates :original_text, presence: true, length: { maximum: 65_535 }
+  validates :original_text, presence: true, length: { maximum: 1_000 }
 
   belongs_to :user
   has_many :suggestions, dependent: :destroy
