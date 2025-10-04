@@ -7,20 +7,18 @@ class ConversationsController < ApplicationController
   def create
     @conversation = current_user.conversations.build(conversation_params)
     if @conversation.save
-      # AIへのリクエスト処理（非同期ジョブを推奨）
-
       # AI処理をバックグラウンドジョブで実行
       AiSuggestionJob.perform_later(@conversation.id)
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to conversations_path, notice: "AIに言い換えを依頼しました！" }
+        format.html { redirect_to conversations_path, info: "AIに言い換えを依頼しました！" }
       end
     else
       # バリデーションエラー時の処理
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to conversations_path, alert: @conversation.errors.full_messages.join(', ') }
+        format.html { redirect_to conversations_path, error: @conversation.errors.full_messages.join(', ') }
       end
     end
   end
