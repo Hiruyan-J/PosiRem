@@ -12,7 +12,7 @@ class ConversationsController < ApplicationController
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to conversations_path, info: "AIに言い換えを依頼しました！" }
+        format.html { redirect_to conversations_path, info: "AIに言い換えを依頼しました。しばらくたってから、画面の再読み込みを行ってください。" }
       end
     else
       # バリデーションエラー時の処理
