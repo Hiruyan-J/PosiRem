@@ -1,7 +1,9 @@
-<div class="chat chat-start">
+<div class="gap-1">
   <% conversation.suggestions.each do |suggestion| %>
-    <div class="chat-bubble chat-bubble-secondary text-secondary-content">
-      <%= suggestion.positive_text %>
+    <div class="chat chat-start">
+      <div class="chat-bubble chat-bubble-secondary text-secondary-content">
+        <%= suggestion.positive_text %>
+      </div>
     </div>
   <% end %>
 </div>
