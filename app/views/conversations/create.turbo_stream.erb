@@ -14,15 +14,14 @@
     <%= render "form", conversation: current_user.conversations.build %>
   <% end %>
 
-  <%# フラッシュメッセージ表示 %>
-  <% flash.now[:info] = "AIに言い換えを依頼しました！" %>
+  <%# フラッシュメッセージをクリア %>
   <%= turbo_stream.replace "flash-messages" do %>
     <%= render 'shared/flash_message' %>
   <% end %>
 
 <% else %>
   <%# エラーメッセージ表示 %>
-  <% flash.now[:warning] = @conversation.errors.full_messages.join(', ') %>
+  <% flash.now[:error] = @conversation.errors.full_messages.join(', ') %>
   <%= turbo_stream.replace "flash-messages" do %>
     <%= render 'shared/flash_message' %>
   <% end %>

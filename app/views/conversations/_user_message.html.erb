@@ -1,8 +1,8 @@
 <div class="chat chat-end">
   <div class="text-xs mb-2">
-    <%= conversation.created_at.strftime("%Y/%m/%d %H:%M") %>
+    <%= l conversation.created_at, format: :long %>
   </div>
-  <div class="chat-bubble chat-bubble-primary text-primary-content">
+  <div id="original_text_#{conversation.id}" class="chat-bubble chat-bubble-primary text-primary-content">
     <%= conversation.original_text %>
   </div>
 </div>
