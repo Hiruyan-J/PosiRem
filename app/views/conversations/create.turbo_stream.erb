@@ -1,4 +1,4 @@
-<% if @conversation.any? %>
+<% if @conversation.persisted? %>
   <%# ユーザーメッセージを追加 %>
   <%= turbo_stream.append "chat-messages" do %>
     <%= render "user_message", conversation: @conversation %>
@@ -16,9 +16,8 @@
 
   <%# フラッシュメッセージ表示 %>
   <% flash.now[:info] = "AIに言い換えを依頼しました！" %>
-    <%= turbo_stream.replace "flash-messages" do %>
-      <%= render 'shared/flash_message' %>
-    <% end %>
+  <%= turbo_stream.replace "flash-messages" do %>
+    <%= render 'shared/flash_message' %>
   <% end %>
 
 <% else %>
