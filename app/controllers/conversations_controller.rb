@@ -18,7 +18,7 @@ class ConversationsController < ApplicationController
       # バリデーションエラー時の処理
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to conversations_path, error: @conversation.errors.full_messages.join(', ') }
+        format.html { redirect_to conversations_path, error: @conversation.errors.full_messages.join(", ") }
       end
     end
   end
