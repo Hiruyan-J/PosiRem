@@ -19,11 +19,21 @@
     <%= render 'shared/flash_message' %>
   <% end %>
 
+  <%# AIエラーメッセージをクリア %>
+  <%= turbo_stream.replace "ai_error_messages" do %>
+    <%= render 'shared/ai_error_messages', error_message: nil %>
+  <% end %>
+
 <% else %>
   <%# エラーメッセージ表示 %>
-  <% flash.now[:error] = @conversation.errors.full_messages.join(', ') %>
+  <% flash.now[:error] = "エラーが発生しました" %>
   <%= turbo_stream.replace "flash-messages" do %>
     <%= render 'shared/flash_message' %>
+  <% end %>
+
+  <%# AIエラーメッセージをクリア %>
+  <%= turbo_stream.replace "ai_error_messages" do %>
+    <%= render 'shared/ai_error_messages', error_message: nil %>
   <% end %>
 <% end %>
 

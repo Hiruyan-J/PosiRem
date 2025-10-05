@@ -14,20 +14,22 @@ class AiSuggestionJob < ApplicationJob
         conversation.suggestions.create!(positive_text: text)
       end
 
+      # raise StandardError, "test error"
+
       # Turbo Streamで結果を配信
       broadcast_ai_response(conversation)
 
     rescue OpenAI::Error => e
       # APIエラーが発生した場合の処理
-      @error_message = "AIとの通信中にエラーが発生しました： #{e.message}"
-      broadcast_ai_error(conversation, @error_message)
+      error_message = "AIとの通信中にエラーが発生しました。もう一度お試しください。"
+      broadcast_ai_error(conversation, e, error_message)
     rescue JSON::ParserError => e
       # JSONのパースに失敗した場合の処理
-      @error_message = "AIからの応答を正しく解析できませんでした。もう一度お試しください。"
-      broadcast_ai_error(conversation, @error_message)
+      error_message = "AIからの応答を正しく解析できませんでした。もう一度お試しください。"
+      broadcast_ai_error(conversation, e, error_message)
     rescue StandardError => e
-      @error_message = e.message
-      broadcast_ai_error(conversation, @error_message)
+      error_message = "予期しないエラーが発生しました。しばらく時間をおいて再度お試しください。"
+      broadcast_ai_error(conversation, e, error_message)
     end
   end
 
@@ -115,11 +117,25 @@ class AiSuggestionJob < ApplicationJob
     )
   end
 
-  def broadcast_ai_error(conversation, error_message)
+  def broadcast_ai_error(conversation, exception, error_message)
     # 思考中メッセージを削除
     broadcast_remove_thinking_message(conversation)
 
+    # ActiveRecord のエラーがあればそれを表示、なければ引数の error_message を表示
+    # errors = conversation.errors.any? ? conversation.errors : [OpenStruct.new(full_message: error_message)]
+
+    # binding.pry
     # エラーメッセージを表示
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "user_#{conversation.user_id}",
+      target: "ai_error_messages",
+      partial: "shared/ai_error_messages",
+      locals: { error_message: error_message }
+    )
+
+    # ログの出力
+    Rails.logger.error "#{exception.class}: #{exception.message}"
+    Rails.logger.error "Request details: #{conversation.original_text}"
   end
 
   def broadcast_remove_thinking_message(conversation)
