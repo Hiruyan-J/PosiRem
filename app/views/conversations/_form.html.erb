@@ -1,0 +1,6 @@
+<div id="conversation-form" class="mt-4">
+  <%= form_with(model: conversation, url: conversations_path, class: "flex gap-2 items-end") do |form| %>
+    <%= form.text_area :original_text, placeholder: "例：走らないで\n例：ご飯を食べているときに立ち上がってしまう", rows: 1, class: "textarea textarea-bordered textarea-primary flex-grow min-h-15" %>
+    <%= form.submit "送信", class: "btn btn-primary" %>
+  <% end %>
+</div>

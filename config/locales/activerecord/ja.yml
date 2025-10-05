@@ -1,3 +1,10 @@
 ja:
   activerecord:
     models:
+      conversation: 会話
+      suggestion: 提案
+    attributes:
+      conversation:
+        original_text: 原文
+      suggestion:
+        positive_text: 変換後テキスト

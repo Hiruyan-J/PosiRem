@@ -1,0 +1,40 @@
+<% if @conversation.persisted? %>
+  <%# ユーザーメッセージを追加 %>
+  <%= turbo_stream.append "chat-messages" do %>
+    <%= render "user_message", conversation: @conversation %>
+  <% end %>
+
+  <%# AI考え中のメッセージ %>
+  <%= turbo_stream.append "chat-messages" do %>
+    <%= render 'ai_thinking', conversation: @conversation %>
+  <% end %>
+
+  <%# フォームをクリア %>
+  <%= turbo_stream.replace "conversation-form" do %>
+    <%= render "form", conversation: current_user.conversations.build %>
+  <% end %>
+
+  <%# フラッシュメッセージをクリア %>
+  <%= turbo_stream.replace "flash-messages" do %>
+    <%= render 'shared/flash_message' %>
+  <% end %>
+
+  <%# AIエラーメッセージをクリア %>
+  <%= turbo_stream.replace "ai_error_messages" do %>
+    <%= render 'shared/ai_error_messages', error_message: nil %>
+  <% end %>
+
+<% else %>
+  <%# エラーメッセージ表示 %>
+  <% flash.now[:error] = "エラーが発生しました" %>
+  <%= turbo_stream.replace "flash-messages" do %>
+    <%= render 'shared/flash_message' %>
+  <% end %>
+
+  <%# AIエラーメッセージをクリア %>
+  <%= turbo_stream.replace "ai_error_messages" do %>
+    <%= render 'shared/ai_error_messages', error_message: nil %>
+  <% end %>
+<% end %>
+
+

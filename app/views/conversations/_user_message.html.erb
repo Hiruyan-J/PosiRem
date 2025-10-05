@@ -1,0 +1,8 @@
+<div id="conversation_<%= conversation.id %>" class="chat chat-end">
+  <div class="text-xs mb-2">
+    <%= l conversation.created_at, format: :long %>
+  </div>
+  <div id="original_text_<%= conversation.id %>" class="chat-bubble chat-bubble-primary text-primary-content">
+    <%= conversation.original_text %>
+  </div>
+</div>
