@@ -9,11 +9,10 @@
       <% share_text = "「#{conversation.original_text}」を「#{suggestion.positive_text}」に言い換えました！\n#PosiRem\n" %>
       <% x_share_url = "https://twitter.com/share?url=#{root_url}&text=#{ERB::Util.url_encode(share_text)}" %>
 
-      <a href="<%= x_share_url %>" target="_blank" rel="noreferrer"
-         class="btn btn-xs btn-natural btn-square text-secondary-content"
-         aria-label="Xでシェア">
-         <img src="/x-logo.svg" alt="Xでシェア" class="w-3 h-3 invert"/>
-      </a>
+
+      <%= link_to x_share_url, target: "_blank", rel: "noreferrer", class: "btn btn-xs btn-natural btn-square text-secondary-content", data: { toggle: "tooltip", placement: "auto" }, title: "Xでシェア" do  %>
+        <img src="/x-logo.svg" alt="Xでシェア" class="w-3 h-3 invert"/>
+      <% end %>
 
     </div>
   <% end %>
