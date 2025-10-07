@@ -99,4 +99,20 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # 1. Render環境変数からホスト名を取得し、設定がない場合は起動時にエラーを発生させる
+  #    これにより、ホスト名未設定によるexample.orgへのフォールバックを防止する。
+  host = ENV.fetch("RENDER_EXTERNAL_HOSTNAME")
+
+  # 2. Action ControllerのデフォルトURLオプション設定
+  config.action_controller.default_url_options = { host: host, protocol: "https" } # Render上のWebサービスは通常HTTPSであるため
+
+  # 3. Action MailerのデフォルトURLオプション設定 (非リクエストコンテキスト用)
+  config.action_mailer.default_url_options = { host: host, protocol: "https" }
+
+  # 4. Action Mailerの設定をグローバルなルートヘルパーのデフォルトにも反映
+  #    これにより、Action Mailer/Controllerの設定とは独立したActiveJobや他のコンテキストもカバーする。
+  Rails.application.routes.default_url_options.merge!(
+    config.action_controller.default_url_options
+  )
 end
