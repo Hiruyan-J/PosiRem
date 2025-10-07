@@ -38,6 +38,16 @@
       <p>root_url: <%= root_url %></p>
       <p>request.base_url: <%= request.base_url %></p>
       <p>request.host: <%= request.host %></p>
+      <%# 開発環境でのエラーを防ぐための安全な実装例 %>
+      <% host = ENV %> 
+      <%# または、デフォルト値を指定 %>
+      <% rehost = ENV.fetch('RENDER_EXTERNAL_HOSTNAME', 'test') %>
+      <p>rehost: <%= rehost %></p>
+      <%# 開発環境でのエラーを防ぐための安全な実装例 %>
+      <% reurl = ENV %>
+      <%# または、デフォルト値を指定 %>
+      <% reurl = ENV.fetch('RENDER_EXTERNAL_URL', 'test') %>
+      <p>reurl: <%= reurl %></p>
     </div>
     <%= render 'shared/flash_message' %>
     <main class="flex-grow p-4 md:p-8 container mx-auto">
