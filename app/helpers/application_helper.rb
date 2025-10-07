@@ -26,8 +26,8 @@ module ApplicationHelper
       title: "子供への注意言葉をポジティブに変えるアプリ",
       reverse: false,
       charset: "utf-8",
-      description: "PosiRem!では、生成AIで子供への注意言葉をポジティブに変換するお手伝いをします。",
-      keywords: "子供,子育て,育児,幼児,ポジティブ,変換,AI",
+      description: "「つい強く言ってしまう…」そんな後悔を減らしたいママ・パパへ。PosiRem!は、子供への注意言葉をやさしく言い換えるAIアプリです。今日から、もっと笑顔で伝えられる子育てを。",
+      keywords: "子育て,育児,幼児,ポジティブ,言い換え,AI,声かけ,しつけ,親子コミュニケーション,優しい言い方,注意の言葉,ポジティブ育児,ママ,パパ,AIアプリ",
       canonical: request.original_url,
       separator: "|",
       og: {
@@ -40,7 +40,7 @@ module ApplicationHelper
         local: "ja-JP"
       },
       twitter: {
-        card: "summary_image",
+        card: "summary",
         image: image_url("PosiRem_OGP.png")
       }
     }
