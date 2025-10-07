@@ -41,7 +41,6 @@ module ApplicationHelper
       },
       twitter: {
         card: "summary_image",
-        site: "@obvyamdrss",
         image: image_url("PosiRem_OGP.png")
       }
     }
