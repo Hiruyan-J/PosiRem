@@ -40,8 +40,7 @@ module ApplicationHelper
         local: "ja-JP"
       },
       twitter: {
-        card: "summary_large_image", # Twitterで表示する場合は大きいカードに変更
-        site: "@obvyamdrss",
+        card: "summary_image",
         image: image_url("PosiRem_OGP.png")
       }
     }
