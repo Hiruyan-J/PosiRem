@@ -22,27 +22,27 @@ module ApplicationHelper
 
   def default_meta_tags
     {
-      site: 'PosiRem!',
-      title: '子供への注意言葉をポジティブに変えるアプリ',
+      site: "PosiRem!",
+      title: "子供への注意言葉をポジティブに変えるアプリ",
       reverse: false,
-      charset: 'utf-8',
-      description: 'PosiRem!では、生成AIで子供への注意言葉をポジティブに変換するお手伝いをします。',
-      keywords: '子供,子育て,育児,幼児,ポジティブ,変換,AI',
+      charset: "utf-8",
+      description: "PosiRem!では、生成AIで子供への注意言葉をポジティブに変換するお手伝いをします。",
+      keywords: "子供,子育て,育児,幼児,ポジティブ,変換,AI",
       canonical: request.original_url,
-      separator: '|',
-      og:{
+      separator: "|",
+      og: {
         site_name: :site,
         title: :title,
         description: :description,
-        type: 'website',
+        type: "website",
         url: request.original_url,
-        image: image_url('PosiRem_OGP.png'),
-        local: 'ja-JP'
+        image: image_url("PosiRem_OGP.png"),
+        local: "ja-JP"
       },
       twitter: {
-        card: 'summary_large_image', # Twitterで表示する場合は大きいカードに変更
-        site: '@obvyamdrss',
-        image: image_url('PosiRem_OGP.png')
+        card: "summary_large_image", # Twitterで表示する場合は大きいカードに変更
+        site: "@obvyamdrss",
+        image: image_url("PosiRem_OGP.png")
       }
     }
   end
