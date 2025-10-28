@@ -35,7 +35,7 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 # フロント
-gem "tailwindcss-rails", "~> 4.0"
+gem "tailwindcss-rails", "~> 4.4"
 gem "tailwindcss-ruby"
 gem "rails-i18n", "~> 7.0.0"
 
