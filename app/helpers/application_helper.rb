@@ -11,11 +11,6 @@ module ApplicationHelper
     end
   end
 
-  def page_title(title = "")
-    base_title = "PosiRem!"
-    title.present? ? "#{base_title} | #{title}" : base_title
-  end
-
   def page_top_title(title = nil)
     render "shared/page_top_title", title: title
   end
@@ -23,7 +18,7 @@ module ApplicationHelper
   def default_meta_tags
     {
       site: "PosiRem!",
-      title: "子供への注意言葉をポジティブに変えるアプリ",
+      title: content_for?(:title) ? content_for(:title) : "",
       reverse: false,
       charset: "utf-8",
       description: "「つい強く言ってしまう…」そんな後悔を減らしたいママ・パパへ。PosiRem!は、子供への注意言葉をやさしく言い換えるAIアプリです。今日から、もっと笑顔で伝えられる子育てを。",
