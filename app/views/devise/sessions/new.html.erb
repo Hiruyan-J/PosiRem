@@ -1,5 +1,5 @@
 <% content_for :title,  t('.sign_in') %>
-<%= page_top_title %>
+<%= page_heading %>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "flex flex-col gap-4 py-2" }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>

@@ -11,8 +11,8 @@ module ApplicationHelper
     end
   end
 
-  def page_top_title(title = nil)
-    render "shared/page_top_title", title: title
+  def page_heading(title = nil)
+    render "shared/page_heading", title: title
   end
 
   def default_meta_tags
