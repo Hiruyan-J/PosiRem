@@ -1,20 +1,20 @@
 <% content_for :title,  t('.sign_in') %>
 <%= page_heading %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "flex flex-col gap-4 py-2" }) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "flex flex-col items-center gap-4 py-2" }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
-  <div class="field">
+  <div class="field w-full md:w-8/12">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-primary w-full md:w-8/12" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-primary w-full" %>
   </div>
 
-  <div class="field">
+  <div class="field w-full md:w-8/12">
     <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password", class: "input input-primary w-full md:w-8/12" %>
+    <%= f.password_field :password, autocomplete: "current-password", class: "input input-primary w-full" %>
   </div>
 
   <% if devise_mapping.rememberable? %>
-    <div class="field">
+    <div class="field w-full md:w-8/12">
       <%= f.check_box :remember_me, class: "checkbox checkbox-primary" %>
       <%= f.label :remember_me %>
     </div>
