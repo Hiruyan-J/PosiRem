@@ -1,6 +1,6 @@
 class ConversationsController < ApplicationController
   def index
-    @conversaion = current_user.conversations.build
+    @conversation = current_user.conversations.build
 
     conversations = current_user.conversations.includes(:suggestions).order(created_at: :desc)
 
