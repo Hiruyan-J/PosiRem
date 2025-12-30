@@ -1,7 +1,19 @@
 class ConversationsController < ApplicationController
   def index
-    @conversations = current_user.conversations.includes(:suggestions).order(created_at: :asc)
-    @conversation = current_user.conversations.build
+    @conversaion = current_user.conversations.build
+
+    conversations = current_user.conversations.includes(:suggestions).order(created_at: :desc)
+
+    if params[:before_id].present?
+      conversations = conversations.where("id < ?", params[:before_id])
+    end
+
+    @conversations = conversations.limit(10).reverse
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
