@@ -14,9 +14,7 @@
           <%# ユーザーの入力 %>
           <%= render "user_message", conversation: conversation %>
           <%# AIの回答 %>
-          <% if conversation.suggestions.any? %>
-            <%= render "ai_response", conversation: conversation %>
-          <% end %>
+          <%= render "ai_response", conversation: conversation if conversation.suggestions.any? %>
         <% end %>
       </div>
     <% else %>
