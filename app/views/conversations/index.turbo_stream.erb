@@ -1,0 +1,7 @@
+<turbo-stream action="prepend" target="chat-messages">
+  <template>
+    <% @conversations.each do |conversation| %>
+      <%= render "conversation", conversation: conversation %>
+    <% end %>
+  </template>
+</turbo-stream>
