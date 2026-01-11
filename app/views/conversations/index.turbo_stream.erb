@@ -1,0 +1,7 @@
+<turbo-stream action="after" target="infinite-scroll-target">
+  <template>
+    <% @conversations.each do |conversation| %>
+      <%= render partial: "conversation", formats: [:html], locals: { conversation: conversation } %>
+    <% end %>
+  </template>
+</turbo-stream>
