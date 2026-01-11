@@ -6,7 +6,6 @@ export default class extends Controller {
   static values =  { url: String }
 
   connect() {
-    console.log("InfiniteScrollController connected")
     this.loading = false // 読み込み中フラグ
 
     this.scrollToBottom()  // 初回接続時にスクロールを最下部へ移動
