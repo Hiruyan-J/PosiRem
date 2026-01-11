@@ -2,76 +2,106 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="infinite-scroll"
 export default class extends Controller {
+  static targets = [ "scrollContainer", "sentinel" ]
   static values =  { url: String }
 
   connect() {
-    this.firstLoad = true // 最初の読み込みスキップフラグ
+    console.log("InfiniteScrollController connected")
+    this.loading = false // 読み込み中フラグ
 
     this.scrollToBottom()  // 初回接続時にスクロールを最下部へ移動
 
+    this.setupObserver()
+
+  }
+
+  // IntersectionObserverのセットアップ
+  setupObserver() {
+    console.log("Setting up IntersectionObserver")  // TODO:デバッグ用ログ削除
     this.observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        // 最初の読み込みはスキップ
-        if (this.firstLoad) {
-          this.firstLoad = false
-          return
-        }
+        console.log("読み込み前のスクロールTop:", this.scrollContainerTarget.scrollTop)  // TODO:デバッグ用ログ削除
+        console.log("読み込み前のContainerの高さ:", this.scrollContainerTarget.scrollHeight)  // TODO:デバッグ用ログ削除
         this.load()
       }
+    }, {
+      root: this.hasScrollContainerTarget ? this.scrollContainerTarget : null,
+      rootMargin: '50px 0px 0px 0px'
     })
 
-    this.observer.observe(this.element)  // 監視開始
+    // Targetとして定義した要素を監視
+    if (this.hasSentinelTarget) {
+      this.observer.observe(this.sentinelTarget)
+    }
   }
 
-  load() {
+  // 古いメッセージの読み込み
+  async load() {
     // 多重読み込み防止
     if (this.loading) return
-    this.loading = true
 
     // `conversation_数字` の形式のIDを取得
-    const first = document.querySelector("[id^='conversation_']")
-    if (!first) {
-      this.loading = false  // メッセージが存在しない場合は終了
-      return
-    }
+    const firstMessage = document.querySelector("[id^='conversation_']")
+    if (!firstMessage) return // メッセージが存在しない場合は終了
 
     // 要素のIDから数字部分を抽出
-    const beforeId = first.id.replace("conversation_", "")
+    const beforeId = firstMessage.id.replace("conversation_", "")
     console.log("Loading messages before ID:", beforeId)  // TODO:デバッグ用ログ削除
 
-    // 【スクロール準備】チャットメッセージコンテナの高さを取得
-    const scrollContainer = document.getElementById("chat-messages")
-    const prevHeight = scrollContainer.scrollHeight
+    this.loading = true  // 読み込み開始
 
-    // Turboストリームで古いメッセージを取得
-    fetch(`${this.urlValue}?before_id=${beforeId}`, {
-      headers: { Accept: "text/vnd.turbo-stream.html" }
-    })
-      .then(response => response.text())  // TurboストリームのHTMLを取得
-      .then(html => {
-        // 【画面の更新】Turboストリームを使用して画面を更新
-        Turbo.renderStreamMessage(html)
+    try {
+      // 【スクロール準備】チャットメッセージコンテナの高さを取得
+      const prevHeight = this.scrollContainerTarget.scrollHeight
 
-        // ブラウザの描画が完了するのを待つ
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            // 【スクロール位置調整】スクロール位置を維持
-            const newHeight = scrollContainer.scrollHeight
-            scrollContainer.scrollTop += (newHeight - prevHeight)
-            console.log("Adjusted scrollTop by:", newHeight - prevHeight)  // TODO:デバッグ用ログ削除
-
-            // 読み込み完了(読み込みフラグを解除)
-            this.loading = false
-          })
-        })
+      // Turboストリームで古いメッセージを取得
+      const response = await fetch(`${this.urlValue}?before_id=${beforeId}`, {
+        headers: { Accept: "text/vnd.turbo-stream.html" }
       })
+
+      const html = await response.text()  // TurboストリームのHTMLを取得
+
+      Turbo.renderStreamMessage(html)  // 【画面の更新】Turboストリームを使用して画面を更新
+
+      this.maintainScrollPosition(prevHeight)  // 【スクロール位置調整】スクロール位置を維持
+    } catch (error) {
+      console.error("通信エラー:", error)
+      this.loading = false
+    }
   }
+
+  maintainScrollPosition(prevHeight) {
+    // ブラウザの描画が完了するのを待つ
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // 【スクロール位置調整】スクロール位置を維持
+        const newHeight = this.scrollContainerTarget.scrollHeight
+        const diff = newHeight - prevHeight
+        if (diff > 0) {
+          this.scrollContainerTarget.scrollTop += diff
+        }
+        console.log("Adjusted scrollTop by:", diff)  // TODO:デバッグ用ログ削除
+        console.log("読み込み後のスクロールTop:", this.scrollContainerTarget.scrollTop)  // TODO:デバッグ用ログ削除
+        console.log("読み込み後のContainerの高さ:", this.scrollContainerTarget.scrollHeight)  // TODO:デバッグ用ログ削除
+
+        this.loading = false  // 読み込み完了
+      })
+    })
+  }
+
 
   // 最下部までスクロール
   scrollToBottom() {
-    const scrollContainer = document.getElementById("chat-messages")
-    if (scrollContainer) {
-      scrollContainer.scrollTop = scrollContainer.scrollHeight
+    if (this.scrollContainerTarget) {
+      this.scrollContainerTarget.scrollTop = this.scrollContainerTarget.scrollHeight
+    }
+  }
+
+  // コントローラが切断されたときの処理
+  disconnect() {
+    // IntersectionObserverの監視を停止
+    if (this.observer) {
+      this.observer.disconnect()
     }
   }
 }
