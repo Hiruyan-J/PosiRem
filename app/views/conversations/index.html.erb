@@ -19,7 +19,7 @@
 
         <%# 無限スクロール監視ポイント %>
         <div id="infinite-scroll-target" data-infinite-scroll-target="sentinel">
-          <p class="text-center text-xs text-gray-500">読み込み中…</p>  <%# TODO:デバッグコード削除 %>
+          <%= render "sentinel", message: "読み込み中…" %>
         </div>
 
         <% @conversations.each do |conversation| %>

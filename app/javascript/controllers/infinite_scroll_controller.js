@@ -37,6 +37,7 @@ export default class extends Controller {
 
   // 古いメッセージの読み込み
   async load() {
+    console.log("Loading more messages")  // TODO:デバッグ用ログ削除
     // 多重読み込み防止
     if (this.loading) return
 
@@ -62,6 +63,15 @@ export default class extends Controller {
       const html = await response.text()  // TurboストリームのHTMLを取得
 
       await Turbo.renderStreamMessage(html)  // 【画面の更新】Turboストリームを使用して画面を更新
+
+      // 無限スクロールの終端に到達した場合の処理
+      console.log("Checking if all messages are loaded:", this.sentinelTarget.querySelector('[data-all-loaded="true"]'))  //TODO:デバッグ用ログ削除
+      if (this.sentinelTarget.querySelector('[data-all-loaded="true"]')) {
+        console.log("All messages loaded. Disconnecting observer.")  //TODO:デバッグ用ログ削除
+        this.observer.disconnect()
+        this.loading = false  //TODO:終了処理消してもOK?
+        return
+      }
 
       await this.maintainScrollPosition(prevHeight)  // 【スクロール位置調整】スクロール位置を維持
     } catch (error) {

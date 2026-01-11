@@ -10,7 +10,16 @@ class ConversationsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream do
+        if @conversations.any?
+          # 無限スクロールで会話を追加読み込み
+          logger.debug "Loading more conversations before ID: #{params[:before_id]}"
+        else
+          # 無限スクロールの終端に到達した場合の処理
+          render turbo_stream: turbo_stream.update("infinite-scroll-target",
+            render_to_string(partial: "sentinel", locals: { message: "これ以上メッセージはありません。", all_loaded: true }))
+        end
+      end
     end
   end
 
