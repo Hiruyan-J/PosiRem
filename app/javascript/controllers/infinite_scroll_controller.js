@@ -41,7 +41,7 @@ export default class extends Controller {
     if (this.loading) return
 
     // `conversation_数字` の形式のIDを取得
-    const firstMessage = document.querySelector("[id^='conversation_']")
+    const firstMessage = this.scrollContainerTarget.querySelector("[id^='conversation_']")
     if (!firstMessage) return // メッセージが存在しない場合は終了
 
     // 要素のIDから数字部分を抽出
@@ -61,34 +61,32 @@ export default class extends Controller {
 
       const html = await response.text()  // TurboストリームのHTMLを取得
 
-      Turbo.renderStreamMessage(html)  // 【画面の更新】Turboストリームを使用して画面を更新
+      await Turbo.renderStreamMessage(html)  // 【画面の更新】Turboストリームを使用して画面を更新
 
-      this.maintainScrollPosition(prevHeight)  // 【スクロール位置調整】スクロール位置を維持
+      await this.maintainScrollPosition(prevHeight)  // 【スクロール位置調整】スクロール位置を維持
     } catch (error) {
       console.error("通信エラー:", error)
-      this.loading = false
+    } finally {
+      this.loading = false  // 読み込み完了
     }
   }
 
   maintainScrollPosition(prevHeight) {
     // ブラウザの描画が完了するのを待つ
-    requestAnimationFrame(() => {
+    return new Promise(resolve => {
       requestAnimationFrame(() => {
-        // 【スクロール位置調整】スクロール位置を維持
-        const newHeight = this.scrollContainerTarget.scrollHeight
-        const diff = newHeight - prevHeight
-        if (diff > 0) {
-          this.scrollContainerTarget.scrollTop += diff
-        }
-        console.log("Adjusted scrollTop by:", diff)  // TODO:デバッグ用ログ削除
-        console.log("読み込み後のスクロールTop:", this.scrollContainerTarget.scrollTop)  // TODO:デバッグ用ログ削除
-        console.log("読み込み後のContainerの高さ:", this.scrollContainerTarget.scrollHeight)  // TODO:デバッグ用ログ削除
-
-        this.loading = false  // 読み込み完了
+        requestAnimationFrame(() => {
+          // 【スクロール位置調整】スクロール位置を維持
+          const newHeight = this.scrollContainerTarget.scrollHeight
+          const diff = newHeight - prevHeight
+          if (diff > 0) {
+            this.scrollContainerTarget.scrollTop += diff
+          }
+          resolve()
+        })
       })
     })
   }
-
 
   // 最下部までスクロール
   scrollToBottom() {
