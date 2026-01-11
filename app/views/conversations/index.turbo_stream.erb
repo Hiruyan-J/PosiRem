@@ -1,7 +1,9 @@
-<turbo-stream action="prepend" target="chat-messages">
+<turbo-stream action="after" target="infinite-scroll-target">
   <template>
     <% @conversations.each do |conversation| %>
-      <%= render "conversation", conversation: conversation %>
+      <p>stream</p>  <%# TODO:デバッグコード削除 %>
+      <%= conversation.id %>  <%# TODO:デバッグコード削除 %>
+      <%= render partial: "conversation", formats: [:html], locals: { conversation: conversation } %>
     <% end %>
   </template>
 </turbo-stream>
