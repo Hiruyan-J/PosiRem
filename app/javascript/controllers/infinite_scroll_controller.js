@@ -7,6 +7,8 @@ export default class extends Controller {
   connect() {
     this.firstLoad = true // 最初の読み込みスキップフラグ
 
+    this.scrollToBottom()  // 初回接続時にスクロールを最下部へ移動
+
     this.observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
         // 最初の読み込みはスキップ
@@ -18,7 +20,7 @@ export default class extends Controller {
       }
     })
 
-    this.observer.observe(this.element)
+    this.observer.observe(this.element)  // 監視開始
   }
 
   load() {
@@ -63,5 +65,13 @@ export default class extends Controller {
           })
         })
       })
+  }
+
+  // 最下部までスクロール
+  scrollToBottom() {
+    const scrollContainer = document.getElementById("chat-messages")
+    if (scrollContainer) {
+      scrollContainer.scrollTop = scrollContainer.scrollHeight
+    }
   }
 }
