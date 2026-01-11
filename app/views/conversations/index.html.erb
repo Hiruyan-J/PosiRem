@@ -23,8 +23,6 @@
         </div>
 
         <% @conversations.each do |conversation| %>
-          <p>html</p>  <%# TODO:デバッグコード削除 %>
-          <%= conversation.id %>  <%# TODO:デバッグコード削除 %>
           <%= render "conversation", conversation: conversation %>
         <% end %>
       </div>

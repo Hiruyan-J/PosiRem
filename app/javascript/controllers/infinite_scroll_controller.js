@@ -17,11 +17,8 @@ export default class extends Controller {
 
   // IntersectionObserverのセットアップ
   setupObserver() {
-    console.log("Setting up IntersectionObserver")  // TODO:デバッグ用ログ削除
     this.observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        console.log("読み込み前のスクロールTop:", this.scrollContainerTarget.scrollTop)  // TODO:デバッグ用ログ削除
-        console.log("読み込み前のContainerの高さ:", this.scrollContainerTarget.scrollHeight)  // TODO:デバッグ用ログ削除
         this.load()
       }
     }, {
@@ -37,7 +34,6 @@ export default class extends Controller {
 
   // 古いメッセージの読み込み
   async load() {
-    console.log("Loading more messages")  // TODO:デバッグ用ログ削除
     // 多重読み込み防止
     if (this.loading) return
 
@@ -47,7 +43,6 @@ export default class extends Controller {
 
     // 要素のIDから数字部分を抽出
     const beforeId = firstMessage.id.replace("conversation_", "")
-    console.log("Loading messages before ID:", beforeId)  // TODO:デバッグ用ログ削除
 
     this.loading = true  // 読み込み開始
 
@@ -65,12 +60,8 @@ export default class extends Controller {
       await Turbo.renderStreamMessage(html)  // 【画面の更新】Turboストリームを使用して画面を更新
 
       // 無限スクロールの終端に到達した場合の処理
-      console.log("Checking if all messages are loaded:", this.sentinelTarget.querySelector('[data-all-loaded="true"]'))  //TODO:デバッグ用ログ削除
       if (this.sentinelTarget.querySelector('[data-all-loaded="true"]')) {
-        console.log("All messages loaded. Disconnecting observer.")  //TODO:デバッグ用ログ削除
         this.observer.disconnect()
-        this.loading = false  //TODO:終了処理消してもOK?
-        return
       }
 
       await this.maintainScrollPosition(prevHeight)  // 【スクロール位置調整】スクロール位置を維持
