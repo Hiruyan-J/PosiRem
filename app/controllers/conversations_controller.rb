@@ -8,7 +8,7 @@ class ConversationsController < ApplicationController
       conversations = conversations.where("id < ?", params[:before_id])
     end
 
-    @conversations = conversations.limit(3).reverse
+    @conversations = conversations.limit(5).reverse
 
     respond_to do |format|
       format.html

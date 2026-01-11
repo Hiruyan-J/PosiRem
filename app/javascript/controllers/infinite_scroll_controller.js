@@ -50,12 +50,18 @@ export default class extends Controller {
         // 【画面の更新】Turboストリームを使用して画面を更新
         Turbo.renderStreamMessage(html)
 
-        // 【スクロール位置調整】スクロール位置を維持
-        const newHeight = scrollContainer.scrollHeight
-        scrollContainer.scrollTop += (newHeight - prevHeight)
+        // ブラウザの描画が完了するのを待つ
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            // 【スクロール位置調整】スクロール位置を維持
+            const newHeight = scrollContainer.scrollHeight
+            scrollContainer.scrollTop += (newHeight - prevHeight)
+            console.log("Adjusted scrollTop by:", newHeight - prevHeight)  // TODO:デバッグ用ログ削除
 
-        // 読み込み完了(読み込みフラグを解除)
-        this.loading = false
+            // 読み込み完了(読み込みフラグを解除)
+            this.loading = false
+          })
+        })
       })
   }
 }
