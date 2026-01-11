@@ -2,13 +2,11 @@ class ConversationsController < ApplicationController
   def index
     @conversation = current_user.conversations.build
 
-    conversations = current_user.conversations.includes(:suggestions).order(created_at: :desc)
-
-    if params[:before_id].present?
-      conversations = conversations.where("id < ?", params[:before_id])
-    end
-
-    @conversations = conversations.limit(5).reverse
+    @conversations = current_user.conversations
+                                  .includes(:suggestions)
+                                  .before_id(params[:before_id])
+                                  .recent_for_scroll(Conversation::CHAT_PAGE_SIZE)
+                                  .reverse
 
     respond_to do |format|
       format.html
