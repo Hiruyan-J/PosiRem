@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "ja-JP"
+tone_instructions: "日本語でレビューしてください。指摘は具体的かつ簡潔にお願いします。"
+early_access: false
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  auto_title_placeholder: "@coderabbitai"
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  path_instructions: []
+  path_filters:
+    - "!vendor/**"
+    - "!node_modules/**"
+    - "!*.lock"
+    - "!**/yarn.lock"
+    - "!**/package-lock.json"
+    - "!db/schema.rb"
+  tools:
+    rubocop:
+      enabled: true
+
+chat:
+  auto_reply: true
