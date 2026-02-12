@@ -1,0 +1,17 @@
+/* バリデーションエラー時の field_with_errors ラッパーによるレイアウト崩れを防止 */
+.field_with_errors {
+  display: contents;
+}
+
+/* バリデーションエラー時の label スタイル: 太字・赤色・アンダーライン */
+.field_with_errors label {
+  font-weight: bold;
+  color: var(--color-error);
+  text-decoration: underline;
+}
+
+/* バリデーションエラー時の input / textarea スタイル: 枠を赤色 */
+.field_with_errors input,
+.field_with_errors textarea {
+  border-color: var(--color-error);
+}
