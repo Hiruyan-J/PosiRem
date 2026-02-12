@@ -28,7 +28,9 @@
 ## 画面イメージ
 
 <p align="center">
-  <img src="app/assets/images/PosiRem_image.png" alt="PosiRem! 画面イメージ" width="800">
+  <a href="https://gyazo.com/3c60a78d724b96bb4b3d04dea48fe42d">
+    <img src="https://i.gyazo.com/3c60a78d724b96bb4b3d04dea48fe42d.png" alt="PosiRem! 画面イメージ" width="300">
+  </a>
 </p>
 
 ## 技術スタック
