@@ -18,17 +18,21 @@ if ENV["SELENIUM_REMOTE_URL"].present?
   # Selenium コンテナから web コンテナにアクセスできるようにする
   Capybara.server_host = "0.0.0.0"
   Capybara.app_host = "http://web:#{Capybara.server_port}"
+end
 
-  RSpec.configure do |config|
-    config.before(:each, type: :system) do
+RSpec.configure do |config|
+  config.before(:each, type: :system) do
+    if ENV["SELENIUM_REMOTE_URL"].present?
       driven_by :remote_chrome
-    end
-  end
-else
-  RSpec.configure do |config|
-    config.before(:each, type: :system) do
+    else
       driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
     end
+  end
+
+  config.after(:each, type: :system) do
+    # Turbo のキャッシュをクリア（flaky test 対策）
+    page.execute_script('if (typeof Turbo !== "undefined") { Turbo.clearCache(); }') rescue nil
+    Capybara.reset_sessions!
   end
 end
 

@@ -1,10 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "ログイン・ログアウト", type: :system do
-  let(:user) { create(:user, email: "login@example.com", password: "password123") }
-
   describe "ログイン" do
     it "有効な情報でログインできること" do
+      user = create(:user, password: "password123", password_confirmation: "password123")
       visit new_user_session_path
 
       fill_in "Eメール", with: user.email
@@ -15,6 +14,7 @@ RSpec.describe "ログイン・ログアウト", type: :system do
     end
 
     it "無効な情報ではログインできないこと" do
+      user = create(:user, password: "password123", password_confirmation: "password123")
       visit new_user_session_path
 
       fill_in "Eメール", with: user.email
@@ -27,6 +27,7 @@ RSpec.describe "ログイン・ログアウト", type: :system do
 
   describe "ログアウト" do
     it "ログアウトできること" do
+      user = create(:user, password: "password123", password_confirmation: "password123")
       visit new_user_session_path
       fill_in "Eメール", with: user.email
       fill_in "パスワード", with: "password123"

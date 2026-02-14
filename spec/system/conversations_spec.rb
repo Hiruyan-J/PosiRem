@@ -54,6 +54,8 @@ RSpec.describe "会話機能", type: :system do
       fill_in "conversation[original_text]", with: ""
       click_button "送信"
 
+      # Turbo Stream でフラッシュメッセージが更新されるまで待機
+      expect(page).not_to have_content("ログインしました。")
       expect(page).to have_content("エラーが発生しました")
     end
 
@@ -63,6 +65,8 @@ RSpec.describe "会話機能", type: :system do
       fill_in "conversation[original_text]", with: "あ" * 1001
       click_button "送信"
 
+      # Turbo Stream でフラッシュメッセージが更新されるまで待機
+      expect(page).not_to have_content("ログインしました。")
       expect(page).to have_content("エラーが発生しました")
     end
   end
