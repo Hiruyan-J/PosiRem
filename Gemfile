@@ -68,6 +68,11 @@ group :development, :test do
   gem "pry-byebug"
   gem "pry-doc"
   gem "pry-rails"
+
+  # Testing
+  gem "rspec-rails", "~> 7.0"
+  gem "factory_bot_rails"
+  gem "shoulda-matchers", "~> 6.0"
 end
 
 group :development do

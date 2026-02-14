@@ -27,11 +27,17 @@ services:
       - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
+      SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
     ports:
       - "3001:3000"
     depends_on:
       db:
         condition: service_healthy
+  chrome:
+    image: selenium/standalone-chrome
+    shm_size: "2gb"
+    ports:
+      - "4444:4444"
 volumes:
   bundle_data:
   postgresql_data:
