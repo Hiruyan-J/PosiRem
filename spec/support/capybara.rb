@@ -30,9 +30,10 @@ RSpec.configure do |config|
   end
 
   config.after(:each, type: :system) do
-    # Turbo のキャッシュをクリア（flaky test 対策）
+    # Turbo Drive の状態を含むブラウザ状態を完全にリセット
     begin
       page.execute_script('if (typeof Turbo !== "undefined") { Turbo.clearCache(); }')
+      page.driver.browser.navigate.to("about:blank")
     rescue Selenium::WebDriver::Error::JavascriptError, Capybara::NotSupportedByDriverError
       # JavaScriptエラーまたはドライバー非対応の場合は無視
     end

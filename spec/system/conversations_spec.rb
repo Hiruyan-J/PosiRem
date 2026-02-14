@@ -13,6 +13,7 @@ RSpec.describe "会話機能", type: :system do
     user
   end
 
+
   describe "会話一覧画面" do
     context "会話が存在しない場合" do
       it "オンボーディングメッセージが表示されること" do
@@ -48,26 +49,22 @@ RSpec.describe "会話機能", type: :system do
       expect(page).to have_content("走らないで")
     end
 
-    it "空のテキストで送信するとエラーになること" do
+    it "空のテキストでは会話が作成されないこと" do
       login_as_new_user
 
       fill_in "conversation[original_text]", with: ""
       click_button "送信"
 
-      # Turbo Stream でフラッシュメッセージが更新されるまで待機
-      expect(page).not_to have_content("ログインしました。")
-      expect(page).to have_content("エラーが発生しました")
+      expect(Conversation.count).to eq 0
     end
 
-    it "1000文字を超えるテキストで送信するとエラーになること" do
+    it "1000文字を超えるテキストでは会話が作成されないこと" do
       login_as_new_user
 
       fill_in "conversation[original_text]", with: "あ" * 1001
       click_button "送信"
 
-      # Turbo Stream でフラッシュメッセージが更新されるまで待機
-      expect(page).not_to have_content("ログインしました。")
-      expect(page).to have_content("エラーが発生しました")
+      expect(Conversation.count).to eq 0
     end
   end
 end
