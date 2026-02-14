@@ -32,6 +32,7 @@ RSpec.describe "ログイン・ログアウト", type: :system do
       fill_in "パスワード", with: "password123"
       click_button "ログイン"
 
+      expect(page).to have_current_path(conversations_path(format: :html))
       click_link "ログアウト"
 
       expect(page).to have_content("ログアウトしました")

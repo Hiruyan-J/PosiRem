@@ -31,3 +31,6 @@ else
     end
   end
 end
+
+# Turbo Stream のレスポンス待機のため、待機時間を延長
+Capybara.default_max_wait_time = 5
