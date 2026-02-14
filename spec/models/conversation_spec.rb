@@ -42,7 +42,9 @@ RSpec.describe Conversation, type: :model do
 
     describe ".recent_for_scroll" do
       it "作成日時の降順で指定件数を取得すること" do
-        6.times { create(:conversation, user: user) }
+        6.times do |i|
+          create(:conversation, user: user, created_at: (6 - i).minutes.ago)
+        end
 
         result = Conversation.recent_for_scroll(5)
         expect(result.size).to eq 5

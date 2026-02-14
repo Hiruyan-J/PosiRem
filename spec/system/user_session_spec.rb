@@ -27,12 +27,15 @@ RSpec.describe "ログイン・ログアウト", type: :system do
 
   describe "ログアウト" do
     it "ログアウトできること" do
-      sign_in user
-      visit conversations_path
+      visit new_user_session_path
+      fill_in "Eメール", with: user.email
+      fill_in "パスワード", with: "password123"
+      click_button "ログイン"
 
       click_link "ログアウト"
 
-      expect(page).to have_current_path(root_path)
+      expect(page).to have_content("ログアウトしました")
+      expect(page).to have_link("ログイン")
     end
   end
 end
