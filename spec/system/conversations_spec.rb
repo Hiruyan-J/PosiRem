@@ -53,18 +53,14 @@ RSpec.describe "会話機能", type: :system do
       login_as_new_user
 
       fill_in "conversation[original_text]", with: ""
-      click_button "送信"
-
-      expect(Conversation.count).to eq 0
+      expect { click_button "送信" }.not_to change(Conversation, :count)
     end
 
     it "1000文字を超えるテキストでは会話が作成されないこと" do
       login_as_new_user
 
       fill_in "conversation[original_text]", with: "あ" * 1001
-      click_button "送信"
-
-      expect(Conversation.count).to eq 0
+      expect { click_button "送信" }.not_to change(Conversation, :count)
     end
   end
 end
