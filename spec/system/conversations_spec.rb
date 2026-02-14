@@ -15,6 +15,7 @@ RSpec.describe "会話機能", type: :system do
       it "オンボーディングメッセージが表示されること" do
         login_as_new_user
         # ログイン後は自動で conversations_path にリダイレクトされる
+        expect(page).to have_current_path(conversations_path(format: :html))
         expect(page).to have_content("お子さまへの注意の言葉を、テキストボックスに入力してください")
       end
     end
@@ -39,6 +40,7 @@ RSpec.describe "会話機能", type: :system do
   describe "会話の作成" do
     it "テキストを入力して送信すると会話が作成されること" do
       login_as_new_user
+      expect(page).to have_current_path(conversations_path(format: :html))
 
       fill_in "conversation[original_text]", with: "走らないで"
       click_button "送信"
@@ -48,6 +50,7 @@ RSpec.describe "会話機能", type: :system do
 
     it "空のテキストで送信するとエラーになること" do
       login_as_new_user
+      expect(page).to have_current_path(conversations_path(format: :html))
 
       fill_in "conversation[original_text]", with: ""
       click_button "送信"
@@ -57,6 +60,7 @@ RSpec.describe "会話機能", type: :system do
 
     it "1000文字を超えるテキストで送信するとエラーになること" do
       login_as_new_user
+      expect(page).to have_current_path(conversations_path(format: :html))
 
       fill_in "conversation[original_text]", with: "あ" * 1001
       click_button "送信"
