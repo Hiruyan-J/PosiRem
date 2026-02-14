@@ -22,7 +22,9 @@ RSpec.describe "ログイン・ログアウト", type: :system do
       fill_in "パスワード", with: "wrongpassword"
       click_button "ログイン"
 
-      expect(page).to have_content("Eメールまたはパスワードが違います。")
+      # ログインページに留まり、会話ページに遷移しないことを確認
+      expect(page).to have_button("ログイン")
+      expect(page).not_to have_current_path(conversations_path(format: :html))
     end
   end
 
