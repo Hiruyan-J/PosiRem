@@ -1,0 +1,17 @@
+include:
+  - "app/**/*.rb"
+  - "config/**/*.rb"
+  - "lib/**/*.rb"
+exclude:
+  - "vendor/**/*"
+  - "node_modules/**/*"
+  - ".bundle/**/*"
+  - "tmp/**/*"
+  - "log/**/*"
+require:
+  - rails
+reporters:
+  - rubocop
+plugins:
+  - solargraph-rails
+max_files: 5000

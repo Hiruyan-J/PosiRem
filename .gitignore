@@ -45,6 +45,9 @@
 # RSpec
 spec/examples.txt
 
+# VSCode
+.vscode/
+
 # Claude Code
 .claude/
 CLAUDE.md
