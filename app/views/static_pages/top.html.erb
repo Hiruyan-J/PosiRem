@@ -2,7 +2,7 @@
 
 <div class="hero min-h-[60vh] bg-base-100">
   <div class="flex-col text-center md:flex-row hero-content">
-    <%= image_tag "PosiRem_image.png", alt: "PosiRem!", class: "h-60 md:h-70 w-auto mx-auto" %>
+    <%= image_tag "PosiRem_image.png", alt: "PosiRem!", class: "mx-auto w-auto h-60 md:h-70" %>
     <div class="max-w-md">
       <p class="py-6 text-xl text-neutral">
         「〜しないで」を「〜しようね」に。<br>
@@ -10,7 +10,7 @@
         イライラを優しさに変えて、親子の時間をもっと大切にしましょう。
       </p>
       <div class="mt-8">
-        <%= link_to conversations_path, class: "btn btn-primary btn-lg text-primary-content font-bold" do %>
+        <%= link_to conversations_path, class: "font-bold btn btn-primary btn-lg text-primary-content" do %>
           <span class="material-symbols-rounded ms-size-24 md:ms-size-32">forum</span>
           始める
         <% end %>
