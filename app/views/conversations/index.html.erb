@@ -6,15 +6,15 @@
 
 <%= render 'shared/ai_error_messages', error_message: nil %>
 
-<div class="container mx-auto p-4">
-  <div class="chat-container bg-base-100 p-6 rounded-box shadow-lg max-w-2xl mx-auto">
+<div class="container p-4 mx-auto">
+  <div class="p-6 mx-auto max-w-2xl shadow-lg chat-container bg-base-100 rounded-box">
     <%# チャットメッセージ一覧 %>
     <div id="chat-messages"
           data-controller="infinite-scroll"
           data-infinite-scroll-url-value="<%= conversations_path %>"
           data-infinite-scroll-target="scrollContainer"
           style="overflow-anchor: none;"
-          class="overflow-y-auto max-h-[55vh] md:max-h-[60vh] mb-4 p-4 space-y-4">
+          class="overflow-y-auto p-4 mb-4 space-y-4 max-h-[55vh] md:max-h-[60vh]">
 
       <% if @conversations.any? %>
         <%# 無限スクロール監視ポイント %>
